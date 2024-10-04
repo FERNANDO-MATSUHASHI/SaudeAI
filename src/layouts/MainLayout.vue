@@ -2,7 +2,7 @@
   <div class="q-pa-md row justify-center chat-background">
     <!-- Logo à esquerda -->
     <q-img
-      src="public\logo\Logo SaudeAI.png"
+      src="https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Logo%20SaudeAI.png?raw=true"
       class="logo"
     />
     <q-card class="card">
