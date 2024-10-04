@@ -1,14 +1,24 @@
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: auto;
+  margin: 10px;
+}
+
+
 .card {
   width: 100% !important;
   max-width: 850px !important;
-  height: 650px !important;
+  height: 590px !important;
   background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .card_button {
   width: 100% !important;
   max-width: 850px !important;
-  margin-top: -35px !important;
+  margin-top: -20px !important;
   height: 80px !important;
   background-color: rgba(255, 255, 255, 0.3) !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
