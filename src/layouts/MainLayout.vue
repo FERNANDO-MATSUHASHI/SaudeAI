@@ -1,17 +1,16 @@
 <template>
-  <div class="q-pa-md row justify-center chat-background">
-    <!-- Logo à esquerda -->
+  <div class="q-pa-md row justify-center">
+    <div class="chat-background"></div>
     <q-img
-      src="https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Logo%20SaudeAI.png?raw=true"
+      src="https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Logo SaudeAI.png?raw=true"
       class="logo"
     />
-    <q-card class="card">
+    <div class="card">
       <q-card-section class="text-h6">Chat</q-card-section>
 
-      <q-card-section
-        virtual-scroll
-        :virtual-scroll-item-size="50"
-        style="max-height: 510px; overflow-y: auto"
+      <div
+        ref="scrollArea"
+        style="max-height: 510px; overflow-y: auto; margin: 10px;"
       >
         <q-chat-message
           v-for="(message, index) in messages"
@@ -113,10 +112,10 @@
             </svg>
           </div>
         </q-chat-message>
-      </q-card-section>
-    </q-card>
+      </div>
+    </div>
     <!-- Card para Input e Botão -->
-    <q-card class="card_button">
+    <div class="card_button">
       <q-card-section>
         <div class="row items-center q-gutter-sm">
           <q-input
@@ -136,7 +135,7 @@
           />
         </div>
       </q-card-section>
-    </q-card>
+    </div>
   </div>
 </template>
 
@@ -149,6 +148,7 @@ export default {
     return {
       userMessage: '',
       loading: false, // Novo estado para controle de loading
+      sessionId: null, // Adicionado para armazenar o session_id
       messages: [
         {
           name: 'Chat',
@@ -167,65 +167,82 @@ export default {
     this.$refs.userInput.focus(); // Foca no input ao montar o componente
   },
   methods: {
-    async sendMessage() {
-      if (this.userMessage.trim()) {
-        const messageToSend = this.userMessage;
+  async sendMessage() {
+    if (this.userMessage.trim()) {
+      const messageToSend = this.userMessage;
 
-        this.userMessage = '';
+      this.userMessage = '';
+
+      this.messages.push({
+        name: 'Você',
+        avatar:
+          'https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Person.png?raw=true',
+        stamp: new Date().toLocaleTimeString(),
+        content: messageToSend,
+        sent: true,
+        textColor: 'white',
+        bgColor: 'primary',
+      });
+
+            // Rola automaticamente para a mensagem mais recente
+            this.$nextTick(() => {
+        if (this.$refs.scrollArea) {
+          this.$refs.scrollArea.scrollTop = this.$refs.scrollArea.scrollHeight;
+        }
+      });
+
+      this.loading = true; // Começa o loading
+
+      try {
+        const payload = { mensagem_usuario: messageToSend };
+        if (this.sessionId) {
+          payload.session_id = this.sessionId;
+        }
+
+        const response = await axios.post(
+          'https://chatllama-tw11.onrender.com/api/chat',
+          payload
+        );
+
+        if (response.data.session_id && !this.sessionId) {
+          this.sessionId = response.data.session_id;
+        }
 
         this.messages.push({
-          name: 'Você',
+          name: 'Chat',
           avatar:
-            'https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Person.png?raw=true',
+            'https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Logo.png?raw=true',
           stamp: new Date().toLocaleTimeString(),
-          content: messageToSend,
-          sent: true,
-          textColor: 'white',
-          bgColor: 'primary',
+          content: response.data.resposta || 'Resposta não disponível.',
+          sent: false,
+          textColor: 'black',
+          bgColor: 'amber',
         });
-
-        this.loading = true; // Começa o loading
-
-        try {
-          const response = await axios.post(
-            'https://chatllama-tw11.onrender.com/api/chat',
-            {
-              mensagem_usuario: messageToSend,
-            }
-          );
-
-          this.messages.push({
-            name: 'Chat',
-            avatar:
-              'https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Logo.png?raw=true',
-            stamp: new Date().toLocaleTimeString(),
-            content: response.data.resposta || 'Resposta não disponível.',
-            sent: false,
-            textColor: 'black',
-            bgColor: 'amber',
-          });
-        } catch (error) {
-          console.error('Erro ao enviar mensagem:', error);
-          this.messages.push({
-            name: 'Erro',
-            avatar:
-              'https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Logo.png?raw=true',
-            stamp: new Date().toLocaleTimeString(),
-            content: 'Não foi possível obter a resposta do servidor.',
-            sent: false,
-            textColor: 'white',
-            bgColor: 'negative',
-          });
-        } finally {
-          this.loading = false; // Para o loading
-        }
+      } catch (error) {
+        console.error('Erro ao enviar mensagem:', error);
+        this.messages.push({
+          name: 'Erro',
+          avatar:
+            'https://github.com/FERNANDO-MATSUHASHI/SaudeAI/blob/main/public/logo/Logo.png?raw=true',
+          stamp: new Date().toLocaleTimeString(),
+          content: 'Não foi possível obter a resposta do servidor.',
+          sent: false,
+          textColor: 'white',
+          bgColor: 'negative',
+        });
+      } finally {
+        this.loading = false; // Para o loading
       }
+
+      // Rola automaticamente para a mensagem mais recente
       this.$nextTick(() => {
         if (this.$refs.scrollArea) {
           this.$refs.scrollArea.scrollTop = this.$refs.scrollArea.scrollHeight;
         }
       });
-    },
+    }
   },
+},
+
 };
 </script>
