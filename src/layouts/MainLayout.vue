@@ -200,7 +200,7 @@ export default {
         }
 
         const response = await axios.post(
-          'https://chatllama-tw11.onrender.com/api/chat',
+          'http://www.admmaster.com.br/api/chat',
           payload
         );
 
