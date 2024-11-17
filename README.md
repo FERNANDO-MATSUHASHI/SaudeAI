@@ -1,41 +1,50 @@
-# Quasar App (frontend)
+# SaudeAi (frontend)
 
-A Quasar Project
+Nesse projeto estarei usando a Api em Python <br>
+GitHub: [https://github.com/FERNANDO-MATSUHASHI/ChatLlamaAPI-QDrant.git](https://github.com/FERNANDO-MATSUHASHI/ChatLlamaAPI-QDrant.git)
 
-## Install the dependencies
+# Descrição
+
+Link GitHub: [https://github.com/FERNANDO-MATSUHASHI/SaudeAI.git](https://github.com/FERNANDO-MATSUHASHI/SaudeAI.git). <br>
+
+FrontEnd de um Chat voltado para a Saúde, com o intuito de ajudar pessoal com dúvidas na área, usando a inteligência artificial do Llama 3.1-8b.
+
+# Tecnologias
+
+- Vue.js Version: 3.4.18
+- Quasar Framework Version: 2.16.0
+
+# Como funciona
+Aqui explicarei como funciona o SaudeAi
+
+## Tela inicial
+![Inicial](./src/assets/img/Tela_inicial.png)
+
+## Tela resposta
+![Resposta](./src/assets/img/Tela_resposta.png)
+
+# Configuração do Projeto
+
+## Instale as dependências
+
 ```bash
 yarn
 # or
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Rodar o projeto
+
 ```bash
 quasar dev
 ```
 
+### Compilar para produção
 
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-
-### Format the files
-```bash
-yarn format
-# or
-npm run format
-```
-
-
-
-### Build the app for production
 ```bash
 quasar build
 ```
 
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+### Personalize a configuração
+
+Consulte [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

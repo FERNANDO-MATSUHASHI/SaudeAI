@@ -85,7 +85,7 @@ export default {
   async sendMessage() {
     if (this.userMessage.trim()) {
       const messageToSend = this.userMessage;
-      this.userMessage = ""; 
+      this.userMessage = "";
 
       this.messages.push({
         name: "Você",
